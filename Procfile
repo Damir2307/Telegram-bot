@@ -1,1 +1,1 @@
-worker: sh target/bin/tbot
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* Main

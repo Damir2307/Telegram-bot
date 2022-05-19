@@ -1,1 +1,1 @@
-web: java -jar target/tbot.jar
+worker: sh target/bin/tbot

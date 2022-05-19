@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* src/main/java/Main
+web: java -jar target/tbot.jar

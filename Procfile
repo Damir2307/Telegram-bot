@@ -1,1 +1,1 @@
-worker: sh target/bin/tbot
+web: java -Dserver.port=$PORT -jar target/tbot-1.0.jar

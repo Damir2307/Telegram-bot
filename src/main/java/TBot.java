@@ -16,6 +16,7 @@ import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
@@ -90,8 +91,8 @@ public class TBot extends TelegramLongPollingBot {
         System.out.println(response.toString());
         //Read JSON response and print
         JSONObject myResponse = new JSONObject(response.toString());
-        System.out.println("kr4 price 2: "+myResponse.getInt("price"));
-        int price = myResponse.getInt("price");
+        System.out.println("kr4 price 2: "+myResponse.getInt("Count"));
+        int price = myResponse.getInt("Count");
         return price;
     }
 
@@ -113,15 +114,27 @@ public class TBot extends TelegramLongPollingBot {
                         //put
                         HttpPut request = new HttpPut   ("https://api.sheetson.com/v2/sheets/q/2");
                         JSONObject json = new JSONObject();
-                        json.put("price", getPrice()+1);
+                        json.put("Count", getPrice()+1);
                         StringEntity params = new StringEntity(json.toString());
                         request.addHeader("content-type", "application/json");
                         request.addHeader("Authorization","Bearer rQEWpohxFYtWTHdVfz7MKyiAuHu8UHbstAGFOlk0ac9h7A5pF5-qnSoy_Zg");
                         request.addHeader("X-Spreadsheet-Id","1DCUkwa-joV7l-vscfP6nNesTTQbMxsqfccWX7JbEbJ4");
                         request.setEntity(params);
                         httpClient.execute(request);
+
                         SendMessage sendMessage = new SendMessage();
-                        sendMessage.setText("Added!");
+                        HttpPost httpPost = new HttpPost("https://api.sheetson.com/v2/sheets/Story");
+                        JSONObject jsonPostStory = new JSONObject();
+                        jsonPostStory.put("Name",message.getChat().getFirstName());
+                        jsonPostStory.put("Action","Added");
+                        StringEntity paramsStory = new StringEntity(jsonPostStory.toString());
+                        httpPost.addHeader("content-type", "application/json");
+                        httpPost.addHeader("Authorization","Bearer rQEWpohxFYtWTHdVfz7MKyiAuHu8UHbstAGFOlk0ac9h7A5pF5-qnSoy_Zg");
+                        httpPost.addHeader("X-Spreadsheet-Id","1DCUkwa-joV7l-vscfP6nNesTTQbMxsqfccWX7JbEbJ4");
+                        httpPost.setEntity(paramsStory);
+                        httpClient.execute(httpPost);
+
+                        sendMessage.setText("Added! "+message.getChat().getFirstName());
                         sendMessage.setChatId(message.getChatId());
                         execute(sendMessage);
 // handle response here...
@@ -143,13 +156,26 @@ public class TBot extends TelegramLongPollingBot {
                         //put
                         HttpPut request = new HttpPut   ("https://api.sheetson.com/v2/sheets/q/2");
                         JSONObject json = new JSONObject();
-                        json.put("price", getPrice()-1);
+                        json.put("Count", getPrice()-1);
                         StringEntity params = new StringEntity(json.toString());
                         request.addHeader("content-type", "application/json");
                         request.addHeader("Authorization","Bearer rQEWpohxFYtWTHdVfz7MKyiAuHu8UHbstAGFOlk0ac9h7A5pF5-qnSoy_Zg");
                         request.addHeader("X-Spreadsheet-Id","1DCUkwa-joV7l-vscfP6nNesTTQbMxsqfccWX7JbEbJ4");
                         request.setEntity(params);
                         httpClient.execute(request);
+
+                        HttpPost httpPost = new HttpPost("https://api.sheetson.com/v2/sheets/Story");
+                        JSONObject jsonPostStory = new JSONObject();
+                        jsonPostStory.put("Name",message.getChat().getFirstName());
+                        jsonPostStory.put("Action","Minus");
+                        StringEntity paramsStory = new StringEntity(jsonPostStory.toString());
+                        httpPost.addHeader("content-type", "application/json");
+                        httpPost.addHeader("Authorization","Bearer rQEWpohxFYtWTHdVfz7MKyiAuHu8UHbstAGFOlk0ac9h7A5pF5-qnSoy_Zg");
+                        httpPost.addHeader("X-Spreadsheet-Id","1DCUkwa-joV7l-vscfP6nNesTTQbMxsqfccWX7JbEbJ4");
+
+                        httpPost.setEntity(paramsStory);
+                        httpClient.execute(httpPost);
+
                         SendMessage sendMessage = new SendMessage();
                         sendMessage.setText("Minus!");
                         sendMessage.setChatId(message.getChatId());

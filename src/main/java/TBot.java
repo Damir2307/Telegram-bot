@@ -1,3 +1,4 @@
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpRequest;
@@ -30,9 +31,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class TBot extends TelegramLongPollingBot {
 
     public void mainMenu(Message message) throws IOException {
+        log.debug("Get menu");
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText("Choose: ");
         sendMessage.setParseMode(ParseMode.MARKDOWN);

@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/tbot-1.0
+web: java -Dserver.port=$PORT -jar target/tbot-1.0.jar
